@@ -2,7 +2,11 @@ const mongoose=require("mongoose");
 
 const userSchema=new mongoose.Schema(
     {
-        name:{
+        firstName:{
+            type:String,
+            required:true
+        },
+        lastName:{
             type:String,
             required:true
         },
@@ -10,11 +14,25 @@ const userSchema=new mongoose.Schema(
             type:String,
             required:true
         },
-        phone:{
-            type:Number,
+        purpose:{
+            type:String,
             required:true
         },
-        password:
+        graduationYear:{
+            type:String,
+            required:true
+        },
+
+        domain:{
+            type:Array,
+            required:true
+        },
+        date:{
+            type:Date,
+            required:true
+        },
+
+        mode:
         {
             type:String,
             required:true

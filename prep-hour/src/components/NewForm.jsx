@@ -1,5 +1,5 @@
 import * as React from "react";
-import FormHelperText from '@mui/material/FormHelperText';
+import FormHelperText from "@mui/material/FormHelperText";
 import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
@@ -10,7 +10,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -45,8 +44,6 @@ function getStyles(name, domain_name, theme) {
   };
 }
 
-
-
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
@@ -67,7 +64,9 @@ const validationSchema = yup.object({
   graduationYear: yup
     .string("Enter Your Graduation Year")
     .required("Graduation is Required"),
-    mode:yup.string("Enter Mode of Communication").required("Enter mode of communication")
+  mode: yup
+    .string("Enter Mode of Communication")
+    .required("Enter mode of communication"),
 });
 
 export default function EnterDetails() {
@@ -89,12 +88,14 @@ export default function EnterDetails() {
       firstName: "",
       lastName: "",
       purpose: "",
+      domain: "",
       email: "",
-      mode: ""
+      mode: "",
     },
     validationSchema: validationSchema,
+    
     onSubmit: (values) => {
-      console.log(values);
+     console.log(JSON.stringify(values, null, 2));
     },
   });
 
@@ -197,7 +198,7 @@ export default function EnterDetails() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl sx={{   width: 300 }}>
+                <FormControl sx={{ width: 300 }}>
                   <InputLabel id="demo-simple-select-label">
                     Graduation Year
                   </InputLabel>
@@ -224,13 +225,15 @@ export default function EnterDetails() {
                     <MenuItem value={2027}>2027</MenuItem>
                     <MenuItem value={2028}>2028</MenuItem>
                   </Select>
-                  {formik.touched.graduationYear && formik.errors.graduationYear ? (
-         <FormHelperText
-            sx={{ color: "#bf3333", marginLeft: "16px !important" }}
-         >
-            {formik.touched.graduationYear && formik.errors.graduationYear}
-         </FormHelperText>
-         ) : null}
+                  {formik.touched.graduationYear &&
+                  formik.errors.graduationYear ? (
+                    <FormHelperText
+                      sx={{ color: "#bf3333", marginLeft: "16px !important" }}
+                    >
+                      {formik.touched.graduationYear &&
+                        formik.errors.graduationYear}
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
               </Grid>
 
@@ -266,21 +269,19 @@ export default function EnterDetails() {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
-                  label="Date&Time picker"
-                  value={dateValue}
-                  onChange={handleDateChange}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateTimePicker
+                    label="Date&Time picker"
+                    value={dateValue}
+                    onChange={handleDateChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
               </Grid>
-          
-            <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12} sm={6}>
                 <FormControl sx={{ width: 300 }}>
-                  <InputLabel id="mode_">
-                    Mode
-                  </InputLabel>
+                  <InputLabel id="mode_">Mode</InputLabel>
                   <Select
                     labelId="mode"
                     id="mode"
@@ -288,41 +289,32 @@ export default function EnterDetails() {
                     value={formik.values.mode}
                     label="mode"
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.mode &&
-                      Boolean(formik.errors.mode)
-                    }
-                    helperText={
-                      formik.touched.mode &&
-                      formik.errors.mode
-                    }
+                    error={formik.touched.mode && Boolean(formik.errors.mode)}
+                    helperText={formik.touched.mode && formik.errors.mode}
                   >
                     <MenuItem value="Online">Online</MenuItem>
                     <MenuItem value="Offline">Offline</MenuItem>
-                    
-                  </Select>{formik.touched.mode && formik.errors.mode ? (
-         <FormHelperText
-            sx={{ color: "#bf3333", marginLeft: "16px !important" }}
-         >
-            {formik.touched.mode && formik.errors.mode}
-         </FormHelperText>
-         ) : null}
+                  </Select>
+                  {formik.touched.mode && formik.errors.mode ? (
+                    <FormHelperText
+                      sx={{ color: "#bf3333", marginLeft: "16px !important" }}
+                    >
+                      {formik.touched.mode && formik.errors.mode}
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
-              </Grid> 
               </Grid>
+            </Grid>
             <Button
               onClick={formik.handleSubmit}
               type="submit"
-              
               variant="contained"
-             
               sx={{ mt: 3, mb: 2 }}
             >
               Submit
             </Button>
           </Box>
         </Box>
-      
       </Container>
     </form>
   );
