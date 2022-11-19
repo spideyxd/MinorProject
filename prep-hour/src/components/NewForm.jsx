@@ -1,7 +1,5 @@
 import * as React from "react";
 import FormHelperText from "@mui/material/FormHelperText";
-import Chip from "@mui/material/Chip";
-import { useTheme } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,32 +15,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const domainList = ["SDE", "WebD", "AppD", "Analytics", "Non-Tech"];
-
-function getStyles(name, domain_name, theme) {
-  return {
-    fontWeight:
-      domain_name.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 
 const validationSchema = yup.object({
   email: yup
@@ -59,43 +32,34 @@ const validationSchema = yup.object({
     .required("Last Name is required"),
   purpose: yup
     .string("Enter your purpose")
-    .min(20, "purpose should be of minimum 20 characters length")
-    .required("Purpose is required"),
+    .min(20, "purpose should be of minimum 20 characters length").when('role', (oldPassword, field) =>
+    oldPassword==="Mentee" ? field.required() : field
+   ),
   graduationYear: yup
     .string("Enter Your Graduation Year")
     .required("Graduation is Required"),
   mode: yup
     .string("Enter Mode of Communication")
     .required("Enter mode of communication"),
+  role: yup.string("Enter your Role").required("Enter Your Role"),
 });
 
 export default function EnterDetails() {
-  const [domainName, setDomainName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDomainName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-  const theme = useTheme();
   const formik = useFormik({
     initialValues: {
       graduationYear: "",
       firstName: "",
       lastName: "",
       purpose: "",
-      domain: "",
+      date: new Date(),
       email: "",
       mode: "",
+      role: "",
     },
     validationSchema: validationSchema,
-    
-    onSubmit: (values) => {
-     console.log(JSON.stringify(values, null, 2));
+
+    onSubmit: values => {
+      console.log(values);
     },
   });
 
@@ -105,11 +69,8 @@ export default function EnterDetails() {
     backgroundColor: "#ffffff",
     padding: "10px",
   };
-  const [dateValue, setDateValue] = React.useState(dayjs(dayjs()));
 
-  const handleDateChange = (newValue) => {
-    setDateValue(newValue);
-  };
+  // w
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -181,104 +142,110 @@ export default function EnterDetails() {
                   helperText={formik.touched.email && formik.errors.email}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="purpose"
-                  label="Purpose"
-                  id="purpose"
-                  autoComplete="purpose"
-                  value={formik.values.purpose}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.purpose && Boolean(formik.errors.purpose)
-                  }
-                  helperText={formik.touched.purpose && formik.errors.purpose}
-                />
-              </Grid>
+
               <Grid item xs={12} sm={6}>
                 <FormControl sx={{ width: 300 }}>
-                  <InputLabel id="demo-simple-select-label">
-                    Graduation Year
-                  </InputLabel>
+                  <InputLabel id="Role_">Role</InputLabel>
                   <Select
-                    labelId="graduationYear"
-                    id="graduationYear"
-                    name="graduationYear"
-                    value={formik.values.graduationYear}
-                    label="Graduation Year"
+                    labelId="role"
+                    id="role"
+                    name="role"
+                    value={formik.values.role}
+                    label="Role"
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.graduationYear &&
-                      Boolean(formik.errors.graduationYear)
-                    }
-                    helperText={
-                      formik.touched.graduationYear &&
-                      formik.errors.graduationYear
-                    }
+                    error={formik.touched.role && Boolean(formik.errors.role)}
+                    helperText={formik.touched.role && formik.errors.role}
                   >
-                    <MenuItem value={2023}>2023</MenuItem>
-                    <MenuItem value={2024}>2024</MenuItem>
-                    <MenuItem value={2025}>2025</MenuItem>
-                    <MenuItem value={2026}>2026</MenuItem>
-                    <MenuItem value={2027}>2027</MenuItem>
-                    <MenuItem value={2028}>2028</MenuItem>
+                    <MenuItem value="Mentor">Mentor</MenuItem>
+                    <MenuItem value="Mentee">Mentee</MenuItem>
                   </Select>
-                  {formik.touched.graduationYear &&
-                  formik.errors.graduationYear ? (
+                  {formik.touched.role && formik.errors.role ? (
                     <FormHelperText
                       sx={{ color: "#bf3333", marginLeft: "16px !important" }}
                     >
-                      {formik.touched.graduationYear &&
-                        formik.errors.graduationYear}
+                      {formik.touched.role && formik.errors.role}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <FormControl sx={{ m: 1, width: 300 }}>
-                  <InputLabel id="domain">Domain</InputLabel>
-                  <Select
-                    labelId="domain"
-                    id="domain"
-                    multiple
-                    value={domainName}
-                    onChange={handleChange}
-                    label="Domain"
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}
-                    MenuProps={MenuProps}
-                  >
-                    {domainList.map((name) => (
-                      <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, domainName, theme)}
+              {formik.values.role !== "" && (
+                <Grid item xs={12} sm={6}>
+                  <FormControl sx={{ width: 300 }}>
+                    <InputLabel id="graduation_">Graduation Year</InputLabel>
+                    {formik.values.role === "Mentor" ? (
+                      <Select
+                        labelId="graduationYear"
+                        id="graduationYear"
+                        name="graduationYear"
+                        value={formik.values.graduationYear}
+                        label="Graduation Year"
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.graduationYear &&
+                          Boolean(formik.errors.graduationYear)
+                        }
+                        helperText={
+                          formik.touched.graduationYear &&
+                          formik.errors.graduationYear
+                        }
                       >
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label="Date&Time picker"
-                    value={dateValue}
-                    onChange={handleDateChange}
-                    renderInput={(params) => <TextField {...params} />}
+                        <MenuItem value={2023}>2023</MenuItem>
+                        <MenuItem value={2024}>2024</MenuItem>
+                      </Select>
+                    ) : (
+                      <Select
+                        labelId="graduationYear"
+                        id="graduationYear"
+                        name="graduationYear"
+                        value={formik.values.graduationYear}
+                        label="Graduation Year"
+                        onChange={formik.handleChange}
+                        error={
+                          formik.touched.graduationYear &&
+                          Boolean(formik.errors.graduationYear)
+                        }
+                        helperText={
+                          formik.touched.graduationYear &&
+                          formik.errors.graduationYear
+                        }
+                      >
+                        <MenuItem value={2025}>2025</MenuItem>
+                        <MenuItem value={2026}>2026</MenuItem>
+                        <MenuItem value={2027}>2027</MenuItem>
+                        <MenuItem value={2028}>2028</MenuItem>
+                      </Select>
+                    )}
+                    {formik.touched.graduationYear &&
+                    formik.errors.graduationYear ? (
+                      <FormHelperText
+                        sx={{ color: "#bf3333", marginLeft: "16px !important" }}
+                      >
+                        {formik.touched.graduationYear &&
+                          formik.errors.graduationYear}
+                      </FormHelperText>
+                    ) : null}
+                  </FormControl>
+                </Grid>
+              )}
+              {formik.values.role === "Mentee" &&
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="purpose"
+                    label="Purpose"
+                    id="purpose"
+                    autoComplete="purpose"
+                    value={formik.values.purpose}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.purpose && Boolean(formik.errors.purpose)
+                    }
+                    helperText={formik.touched.purpose && formik.errors.purpose}
                   />
-                </LocalizationProvider>
-              </Grid>
-
+                </Grid>
+              }
               <Grid item xs={12} sm={6}>
                 <FormControl sx={{ width: 300 }}>
                   <InputLabel id="mode_">Mode</InputLabel>
@@ -306,7 +273,7 @@ export default function EnterDetails() {
               </Grid>
             </Grid>
             <Button
-              onClick={formik.handleSubmit}
+            onClick={formik.handleSubmit}
               type="submit"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
