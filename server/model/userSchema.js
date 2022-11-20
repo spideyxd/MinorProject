@@ -11,12 +11,13 @@ const userSchema=new mongoose.Schema(
             required:true
         },
         email:{
+            // unique:true,
             type:String,
             required:true
         },
         purpose:{
             type:String,
-            required:true
+           
         },
         graduationYear:{
             type:String,
@@ -24,7 +25,7 @@ const userSchema=new mongoose.Schema(
         },
 
         domain:{
-            type:Array,
+            type:String,
             required:true
         },
         date:{
@@ -39,8 +40,8 @@ const userSchema=new mongoose.Schema(
         }
 
     }
-)
+);
 
-const User=mongoose.model("signUP",userSchema); //class bni h 
+const User=mongoose.model("user",userSchema); //class bni h 
 
 module.exports=User;
