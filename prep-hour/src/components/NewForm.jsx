@@ -46,7 +46,6 @@ const validationSchema = yup.object({
     .required("Last Name is required"),
   purpose: yup
     .string("Enter your purpose")
-    .min(20, "purpose should be of minimum 20 characters length")
     .when("role", (oldPassword, field) =>
       oldPassword === "Mentee" ? field.required() : field
     ),
