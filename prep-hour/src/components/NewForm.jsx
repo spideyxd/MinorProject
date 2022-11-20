@@ -16,6 +16,20 @@ import Container from "@mui/material/Container";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
+const domains = [
+  "SDE",
+  "Web Development",
+  "App Development",
+  "Analytics",
+  "Non-Tech",
+];
+
+const purpose = [
+  "Mock interviews",
+  "Career guidance",
+  "Resume review",
+  "Consultancy",
+];
 
 const validationSchema = yup.object({
   email: yup
@@ -32,9 +46,10 @@ const validationSchema = yup.object({
     .required("Last Name is required"),
   purpose: yup
     .string("Enter your purpose")
-    .min(20, "purpose should be of minimum 20 characters length").when('role', (oldPassword, field) =>
-    oldPassword==="Mentee" ? field.required() : field
-   ),
+    .min(20, "purpose should be of minimum 20 characters length")
+    .when("role", (oldPassword, field) =>
+      oldPassword === "Mentee" ? field.required() : field
+    ),
   graduationYear: yup
     .string("Enter Your Graduation Year")
     .required("Graduation is Required"),
@@ -42,6 +57,7 @@ const validationSchema = yup.object({
     .string("Enter Mode of Communication")
     .required("Enter mode of communication"),
   role: yup.string("Enter your Role").required("Enter Your Role"),
+  domain: yup.string("Enter Domain").required("Enter Domain"),
 });
 
 export default function EnterDetails() {
@@ -55,24 +71,25 @@ export default function EnterDetails() {
       email: "",
       mode: "",
       role: "",
+      domain: "",
     },
     validationSchema: validationSchema,
 
-    onSubmit: values => {
-      fetch('http://localhost:8000/schedule', {
-  method: 'POST', 
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(values),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    console.log('Success:', data);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+    onSubmit: (values) => {
+      fetch("http://localhost:8000/schedule", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success:", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     },
   });
 
@@ -154,6 +171,34 @@ export default function EnterDetails() {
                   error={formik.touched.email && Boolean(formik.errors.email)}
                   helperText={formik.touched.email && formik.errors.email}
                 />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl sx={{ width: 300 }}>
+                  <InputLabel id="domain_">Domain</InputLabel>
+                  <Select
+                    labelId="domain"
+                    id="domain"
+                    name="domain"
+                    value={formik.values.domain}
+                    label="Domain"
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.domain && Boolean(formik.errors.domain)
+                    }
+                    helperText={formik.touched.domain && formik.errors.domain}
+                  >
+                    {domains.map((val) => (
+                      <MenuItem value={val}>{val}</MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.domain && formik.errors.domain ? (
+                    <FormHelperText
+                      sx={{ color: "#bf3333", marginLeft: "16px !important" }}
+                    >
+                      {formik.touched.domain && formik.errors.domain}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
               </Grid>
 
               <Grid item xs={12} sm={6}>
@@ -241,24 +286,36 @@ export default function EnterDetails() {
                   </FormControl>
                 </Grid>
               )}
-              {formik.values.role === "Mentee" &&
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="purpose"
-                    label="Purpose"
+              {formik.values.role === "Mentee" && (
+                <Grid item xs={12} sm={6}>
+                <FormControl sx={{ width: 300 }}>
+                  <InputLabel id="purpose_">Purpose</InputLabel>
+                  <Select
+                    labelId="purpose"
                     id="purpose"
-                    autoComplete="purpose"
+                    name="purpose"
                     value={formik.values.purpose}
+                    label="purpose"
                     onChange={formik.handleChange}
                     error={
                       formik.touched.purpose && Boolean(formik.errors.purpose)
                     }
                     helperText={formik.touched.purpose && formik.errors.purpose}
-                  />
-                </Grid>
-              }
+                  >
+                    {purpose.map((val) => (
+                      <MenuItem value={val}>{val}</MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.purpose && formik.errors.purpose ? (
+                    <FormHelperText
+                      sx={{ color: "#bf3333", marginLeft: "16px !important" }}
+                    >
+                      {formik.touched.purpose && formik.errors.purpose}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+              </Grid>
+              )}
               <Grid item xs={12} sm={6}>
                 <FormControl sx={{ width: 300 }}>
                   <InputLabel id="mode_">Mode</InputLabel>
@@ -286,7 +343,7 @@ export default function EnterDetails() {
               </Grid>
             </Grid>
             <Button
-            onClick={formik.handleSubmit}
+              onClick={formik.handleSubmit}
               type="submit"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
