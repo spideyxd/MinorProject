@@ -113,8 +113,8 @@ export default function SignInSide() {
           >
             <Stack direction="row" spacing={1} alignItems="center">
           <Typography>Login</Typography>
-          <AntSwitch defaultChecked inputProps={{ 'aria-label': 'ant design' }} />
-          <Typography>Signup+- cvb/* 1  </Typography>
+          <AntSwitch onChange={ (event)=>{  if(loginOrSignup=='Login')setLoginOrSignup("signUp");else setLoginOrSignup("Login")}} inputProps={{ 'aria-label': 'ant design' }} />
+          <Typography>Signup </Typography>
         </Stack>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <AccountCircleIcon />
@@ -194,15 +194,89 @@ export default function SignInSide() {
               {/* <Copyright sx={{ mt: 5 }} />  */}
             </Box>
           </Box>
-        </Grid></> ) : (<> hi </>)}
+        </Grid></> ) : ( <>  <Grid item xs={12} sm={7} md={5} component={Paper} elevation={9}>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+          <Typography>Login</Typography>
+          <AntSwitch onChange={ (event)=>{  if(loginOrSignup=='Login')setLoginOrSignup("signUp");else setLoginOrSignup("Login")}} inputProps={{ 'aria-label': 'ant design' }} />
+          <Typography>Signup </Typography>
+        </Stack>
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <AccountCircleIcon />
+            </Avatar>
+            <Typography variant="h4">
+              <span style={{ fontFamily: "DM Sans", fontWeight: "800" }}>
+                SIGNUP
+              </span>
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              {/* <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              /> */}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+              SignUP
+              </Button>
 
+                {/* GOOGLE LOGIN */}
 
+              {/* <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  console.log(credentialResponse);
+                  const decoded = jwt_decode(credentialResponse.credential);
+                  console.log(decoded);
+                  history("/dashboard");
+                }}
 
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+                
+              /> */}
 
-
-
-
-
+             
+              {/* <Copyright sx={{ mt: 5 }} />  */}
+            </Box>
+          </Box>
+        </Grid></> )}
 
       </Grid>
       </GoogleOAuthProvider>

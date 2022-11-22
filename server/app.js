@@ -22,7 +22,7 @@ app.post("/schedule", (req, res) => {
     purpose,
     date,
     mode,
-    role,
+    role, 
     domain,
   } = req.body;
 
