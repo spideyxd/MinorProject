@@ -85,7 +85,7 @@ const Banner = () => {
                 guidance, get everything covered by your college seniors under
                 one platform. <span style={{fontStyle:"italic" ,color: "#84EAA0" }} > Schedule Now. </span>
               </Typography>
-              <Link  to="/DetailForm" style={{ textAlign:"right",  textDecoration: 'none' }} > 
+              <Link  to="/login" style={{ textAlign:"right",  textDecoration: 'none' }} > 
               
               <Button variant="outlined" color="error" style={{ borderRadius:"50px" ,marginTop :"6vh" ,marginLeft:"auto",marginRight:"auto" }}> Schedule Now</Button>
               </Link>
