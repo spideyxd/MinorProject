@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const auth=require("./middleware/authenticate");
+const auth = require("./middleware/authenticate");
 const cors = require("cors");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const DetailUser = require("./model/Schema");
 const corsOptions = {
-  origin: true, 
-  credentials: true, 
+  origin: true,
+  credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -64,6 +64,39 @@ app.post("/register", async (req, res) => {
   });
 });
 
+app.post("/submitDetails", async (req, res) => {
+  const { email, mode, domain } = req.body;
+  console.log(email);
+  const mentor = await DetailUser.find({
+    role: "Mentor",
+    mode: mode,
+    domain: domain,
+  });
+  const mentors = [];
+  const userrr=await DetailUser.findOne({email});
+  mentor.map((val) => {
+    DetailUser.findOneAndUpdate(
+      { email: val.email },
+      { $push:{ mentors:{name:userrr.firstName,email}}},
+      { new: true },
+      (err, dat) => {
+        if (err) console.log(err);
+        else console.log(dat);
+      }
+    );
+  });
+
+  
+  res.json({ msg: "success" });
+});
+
+app.post("/decline", async (req, res) => {
+  const { email,name } = req.body;
+  const ans=await DetailUser.findOneAndUpdate({email:email }, { $pull: { mentors: {name} } }, { new: true });
+  
+  res.json({ msg: "success" });
+});
+
 app.post("/login", async (req, res) => {
   let token;
   try {
@@ -77,15 +110,14 @@ app.post("/login", async (req, res) => {
       const isMatch = await bcrypt.compare(password, userLogin.password);
       token = await userLogin.generateAuthToken();
       res.cookie("jwtoken", token, {
-        expires: new Date(Date.now() +25892000000),
-        httpOnly:true
+        expires: new Date(Date.now() + 25892000000),
+        httpOnly: true,
       });
       if (!isMatch) {
         res.status(400).json({ msg: "error" });
       } else {
         res.json({ msg: "success" });
       }
-      
     } else {
       res.status(400).json({ msg: "error" });
     }
@@ -94,16 +126,13 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
-app.get('/getinfo', auth,(req, res) => {
-  
+app.get("/getinfo", auth, (req, res) => {
   res.send(req.rootUser);
 });
 
-app.get('/logout', (req, res) => {
-  console.log('Hello my Logout Page');
-  res.clearCookie('jwtoken');
-  res.status(200).send('User logout');
+app.get("/logout", (req, res) => {
+  res.clearCookie("jwtoken");
+  res.status(200).send("User logout");
 });
 
 app.listen(8000, () => {

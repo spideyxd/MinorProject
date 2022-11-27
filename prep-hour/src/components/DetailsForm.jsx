@@ -14,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const domains = [
   "SDE",
@@ -31,19 +33,19 @@ const purpose = [
 ];
 
 const validationSchema = yup.object({
+  email:yup.string("Enter email").email().required("email is required"),
   purpose: yup.string("Enter your purpose").required("Purpose is required"),
-
-  mode: yup
-    .string("Enter Mode of Communication")
-    .required("Mode is required"),
-  date:yup.string().required(),
+  mode: yup.string("Enter Mode of Communication").required("Mode is required"),
+  date: yup.string().required(),
   domain: yup.string("Enter Domain").required("Domain is required"),
 });
 
 export default function EnterDetails() {
+  const nav=useNavigate();
   const formik = useFormik({
     initialValues: {
       
+      email:"",
       purpose: "",
       date: new Date(),
       mode: "",
@@ -52,7 +54,8 @@ export default function EnterDetails() {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      fetch("http://localhost:8000/register", {  // ye nhi hoga , get query run hogi yaha pe ,or data update hoga .
+      fetch("http://localhost:8000/submitDetails", {
+        // ye nhi hoga , get query run hogi yaha pe ,or data update hoga .
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +64,8 @@ export default function EnterDetails() {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success:", data);
+         
+          if(data.msg=="success")nav("/dashboard");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -98,7 +102,21 @@ export default function EnterDetails() {
             Enter Details
           </Typography>
           <Box component="form" sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
+            <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <FormControl sx={{ width: 300 }}>
                   <InputLabel id="domain_">Domain</InputLabel>
@@ -128,37 +146,35 @@ export default function EnterDetails() {
                 </FormControl>
               </Grid>
 
-                         <Grid item xs={12} sm={6}>
-                  <FormControl sx={{ width: 300 }}>
-                    <InputLabel id="purpose_">Purpose</InputLabel>
-                    <Select
-                      labelId="purpose"
-                      id="purpose"
-                      name="purpose"
-                      value={formik.values.purpose}
-                      label="purpose"
-                      onChange={formik.handleChange}
-                      error={
-                        formik.touched.purpose && Boolean(formik.errors.purpose)
-                      }
-                      helperText={
-                        formik.touched.purpose && formik.errors.purpose
-                      }
+              <Grid item xs={12} sm={6}>
+                <FormControl sx={{ width: 300 }}>
+                  <InputLabel id="purpose_">Purpose</InputLabel>
+                  <Select
+                    labelId="purpose"
+                    id="purpose"
+                    name="purpose"
+                    value={formik.values.purpose}
+                    label="purpose"
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.purpose && Boolean(formik.errors.purpose)
+                    }
+                    helperText={formik.touched.purpose && formik.errors.purpose}
+                  >
+                    {purpose.map((val) => (
+                      <MenuItem value={val}>{val}</MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.purpose && formik.errors.purpose ? (
+                    <FormHelperText
+                      sx={{ color: "#bf3333", marginLeft: "16px !important" }}
                     >
-                      {purpose.map((val) => (
-                        <MenuItem value={val}>{val}</MenuItem>
-                      ))}
-                    </Select>
-                    {formik.touched.purpose && formik.errors.purpose ? (
-                      <FormHelperText
-                        sx={{ color: "#bf3333", marginLeft: "16px !important" }}
-                      >
-                        {formik.touched.purpose && formik.errors.purpose}
-                      </FormHelperText>
-                    ) : null}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
+                      {formik.touched.purpose && formik.errors.purpose}
+                    </FormHelperText>
+                  ) : null}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
                 <FormControl sx={{ width: 300 }}>
                   <InputLabel id="mode_">Mode</InputLabel>
                   <Select
@@ -183,7 +199,7 @@ export default function EnterDetails() {
                   ) : null}
                 </FormControl>
               </Grid>
-              </Grid>
+            </Grid>
 
             <Button
               onClick={formik.handleSubmit}

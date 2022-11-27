@@ -13,37 +13,32 @@ import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Cards from "./Cards";
-import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";  
+import { useNavigate} from "react-router-dom";
+import DashMentee from "./Dash_Mentee";
+import DashMentor from "./Dash_Mentor";
 
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
+  const [rolee,setRolee]=React.useState("");
   const [user, setUser] = React.useState({});
   const nav = useNavigate();
-
-  const getInfo = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/getinfo", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await res.json();
-      setUser(data);
-    } catch (err) {
-     nav("/login");
-    }
-  };
+ 
   React.useEffect(() => {
-    getInfo();
+    fetch("http://localhost:8000/getinfo", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((data) => data.json())
+      .then((data) => {setRolee(data.role); setUser(data);});
   }, []);
 
-  const { firstName, email, role, graduationYear } = user;
+  const { firstName, role, graduationYear } = user;
 
   const userData = [firstName, "JIIT", role, graduationYear];
 
@@ -88,10 +83,6 @@ export default function ResponsiveDrawer() {
               })
                 .then((res) => {
                   nav("/login", { replace: true });
-                  if ((res.status = 200)) {
-                    const error = new Error(res.error);
-                    throw error;
-                  }
                 })
                 .catch((err) => {
                   console.log(err);
@@ -139,14 +130,11 @@ export default function ResponsiveDrawer() {
           mt: "4.5vh",
         }}
       >
-        <Cards />
-        <Cards />
-        <Cards />
-        <Cards />
-        <Cards />
-        <Cards />
-        <Cards />
-        <Cards />
+        {
+          (rolee=="Mentor")?<DashMentor arr={user.mentors!=undefined?user.mentors:[]}/>:<DashMentee arr={user.mentors!=undefined?user.mentors:[]}/>
+        }
+        
+        
       </Box>
     </Box>
   );

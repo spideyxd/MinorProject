@@ -13,7 +13,7 @@ root.render(
     <>
     <BrowserRouter>
       <Routes>
-        <Route path="detailform" element={<EnterDetails/>}/>
+        <Route path="detailsform" element={<EnterDetails/>}/>
         <Route path="login" element={<Form />} />
         <Route path="/" element={<App/>} />
         <Route path="dashboard" element={<ResponsiveDrawer/>} />

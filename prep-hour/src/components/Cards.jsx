@@ -8,7 +8,8 @@ import Typography from "@mui/material/Typography";
 import img from "../DesignAssets/user.jpg";
 import { useNavigate } from "react-router-dom";
 
-export default function Cards() {
+export default function Cards(props) {
+  const [x, setX] = React.useState(1);
     const nav=useNavigate();
     const [user,setUser]=React.useState({});
     const getInfo = async () => {
@@ -27,6 +28,24 @@ export default function Cards() {
          nav("/login");
         }
       };
+      const deleteCard = async () => {
+        try {
+          const res = await fetch("http://localhost:8000/decline", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({email:user.email,name:props.name}),
+          });
+          const data = await res.json();
+          console.log(data.msg);
+          if(data.msg=="success")window.location.reload();
+
+        } catch (err) {
+        //  nav("/login");
+        }
+      };
       React.useEffect(() => {
         getInfo();
       }, []);
@@ -34,13 +53,13 @@ export default function Cards() {
     <Card sx={{  m:5, width: 240 }}>
       <CardMedia component="img" alt="User" height="180" image={img} />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Name
+        <Typography   style={{ textTransform: "capitalize" }} gutterBottom variant="h5" component="div">
+          {props.name}
         </Typography>
       </CardContent>    
       <CardActions>
         <Button size="small"  >{user.role=="Mentor"?"Accept":"Request"}</Button>
-        <Button size="small" >{user.role=="Mentor"?"Decline":"Cancel Request"}</Button>
+        <Button size="small" onClick={deleteCard} >{user.role=="Mentor"?"Decline":"Cancel Request"}</Button>
       </CardActions>
     </Card>
   );
