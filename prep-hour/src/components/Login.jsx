@@ -14,7 +14,6 @@ import illust from "../DesignAssets/illustForm.png";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import EnterDetails from "./DetailsForm";
 
 const theme = createTheme();
 
@@ -26,15 +25,15 @@ const validationSchema = yup.object({
     .email("Enter a valid email")
     .required("Email is required"),
   password: yup
-    .string("Enter your first name")
-    .min(2, "First Name should be of minimum 2 characters length")
-    .required("First Name is required"),
+    .string("Enter your Password  ")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
 });
 
 //LOGIN FUNCTION
 
 export default function SignInSide() {
-  const nav=useNavigate();
+  const nav = useNavigate();
   const formik = useFormik({
     initialValues: {
       //initial values
@@ -47,6 +46,8 @@ export default function SignInSide() {
     onSubmit: (values) => {
       fetch("http://localhost:8000/login", {
         method: "POST",
+
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -55,11 +56,12 @@ export default function SignInSide() {
         .then((response) => response.json())
         .then((data) => {
           if (data.msg == "error") alert("Invalid credentials");
-          else{ alert("Success");
-        nav("/detailform");}
+          else {
+            nav("/dashboard");
+          }
         })
         .catch((error) => {
-          console.error("Error:", error);
+         alert("retry");
         });
     },
   });
