@@ -12,7 +12,14 @@
     
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
- 
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+</script>
+<script type="text/javascript">
+(function(){
+  emailjs.init("kFEBDIeZrqu4chvpx");
+})();
+</script>
     <title>React App</title>
   </head>
   <body style="margin: 0;

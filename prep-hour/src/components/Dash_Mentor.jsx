@@ -27,7 +27,7 @@ const DashMentor = (props) => {
               </Button>
             </Link>
           ) : (
-            props.arr.map((value, idx) => <Cards name={value.name }/>)
+            props.arr.map((value, idx) => <Cards name={value.name } email={value.email} />)
           ))}</>
   )
 }
