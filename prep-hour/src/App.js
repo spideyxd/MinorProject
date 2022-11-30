@@ -10,8 +10,8 @@ function App() {
         style={{ display: "flex", flexDirection: "column" }}
         className="body"
       >
-        <Header/>
-        <Banner/>
+        <Header />
+        <Banner />
       </div>
     </>
   );

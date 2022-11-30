@@ -5,7 +5,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 const DrawerComp = () => {
   const [drawerState, setDrawerState] = useState(false);
-  const pages = ["Home", "About", "Contact", "Resources"];
+  const pages = ["Home", "About", "Contact"];
 
   return (
     <>

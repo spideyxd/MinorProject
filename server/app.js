@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -11,8 +12,10 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json());  
 app.use(cookieParser());
+
+const PORT=process.env.PORT || 8000;
 
 mongoose
   .connect("mongodb://localhost:27017/MinorProjectDB")
@@ -104,7 +107,7 @@ app.post("/decline", async (req, res) => {
   res.json({ msg: "success" });
 });
 
-app.post("/login", async (req, res) => {
+app.post("/loginB", async (req, res) => {
   let token;
   try {
     const { email, password } = req.body;
@@ -142,6 +145,14 @@ app.get("/logout", (req, res) => {
   res.status(200).send("User logout");
 });
 
-app.listen(8000, () => {
-  console.log("port 8000");
+// if ( process.env.NODE_ENV = "production"){
+//   app.use(express.static("prep-hour/build"));
+//   const path = require("path");
+//   app.get("*", (req, res) => {
+//         res.sendFile(path.resolve(_dirname, 'prep-hour', 'build', 'index.html'));
+//   });
+// }
+
+app.listen(PORT, () => {
+  console.log("server connected");
 });

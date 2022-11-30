@@ -15,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as yup from "yup";
 import { useFormik } from "formik";
-// import { Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const domains = [

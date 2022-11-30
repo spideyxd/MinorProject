@@ -7,7 +7,7 @@ const Authenticate = async (req, res, next) => {
 
     const verifyToken = jwt.verify(
       token,
-      "HI_I_AM_SHIVAM_NEGIIIIIIIIIIIIIIIIII"
+      process.env.TOKEN
     );
     const rootUser = await User.findOne({
       _id: verifyToken._id,

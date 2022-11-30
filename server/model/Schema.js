@@ -70,7 +70,7 @@ userSchema.methods.generateAuthToken = async function () {
   try {
     let token = jwt.sign(
       { _id: this._id },
-      "HI_I_AM_SHIVAM_NEGIIIIIIIIIIIIIIIIII"
+      process.env.TOKEN
     );
     this.tokens = this.tokens.concat({ token: token });
     await this.save();

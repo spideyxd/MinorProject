@@ -44,7 +44,7 @@ export default function SignInSide() {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
-      fetch("http://localhost:8000/login", {
+      fetch("http://localhost:8000/loginB", {
         method: "POST",
 
         credentials: "include",
@@ -69,7 +69,6 @@ export default function SignInSide() {
   return (
     <ThemeProvider theme={theme}>
       <Grid
-    
         container
         component="main"
         sx={{ height: "80vh", width: "80vw", ml: "10vw", mt: "10vh" }}
@@ -88,8 +87,18 @@ export default function SignInSide() {
           }}
         />
 
-        <Grid   style={{backgroundImage:"linear-gradient(to right,#BDC3C7, #2C3E50)"}} item xs={12} sm={7} md={5} component={Paper} elevation={9}>
-          <Box 
+        <Grid
+          style={{
+            backgroundImage: "linear-gradient(to right,#BDC3C7, #2C3E50)",
+          }}
+          item
+          xs={12}
+          sm={7}
+          md={5}
+          component={Paper}
+          elevation={9}
+        >
+          <Box
             sx={{
               my: 8,
               mx: 4,
@@ -98,11 +107,17 @@ export default function SignInSide() {
               alignItems: "center",
             }}
           >
-            <Avatar  sx={{ m: 1, bgcolor: "#010915" }}>
-              <AccountCircleIcon  />
+            <Avatar sx={{ m: 1, bgcolor: "#010915" }}>
+              <AccountCircleIcon />
             </Avatar>
             <Typography variant="h4">
-              <span style={{ fontSize:"1.5em", fontFamily: "BarlowThicc", fontWeight: "500" }}>
+              <span
+                style={{
+                  fontSize: "1.5em",
+                  fontFamily: "BarlowThicc",
+                  fontWeight: "500",
+                }}
+              >
                 Login
               </span>
             </Typography>
@@ -124,8 +139,8 @@ export default function SignInSide() {
                   autoFocus
                 />
                 <TextField
-                style={{outline:"none" , border:"none"}}
-                type="password"
+                  style={{ outline: "none", border: "none" }}
+                  type="password"
                   margin="normal"
                   autoComplete="password"
                   name="password"
@@ -141,7 +156,13 @@ export default function SignInSide() {
                   helperText={formik.touched.password && formik.errors.password}
                   autoFocus
                 />
-                <Button style={{ fontFamily: "Barlow",color:"black",backgroundImage:"linear-gradient(to left,#BDC3C7, #2C3E50)"}} 
+                <Button
+                  style={{
+                    fontFamily: "Barlow",
+                    color: "black",
+                    backgroundImage:
+                      "linear-gradient(to left,#BDC3C7, #2C3E50)",
+                  }}
                   onClick={formik.handleSubmit}
                   type="submit"
                   fullWidth
@@ -156,13 +177,15 @@ export default function SignInSide() {
                       Forgot password?
                     </Link>
                   </Grid> */}
-                  <Grid  item style={{ textAlign: "right",color:"black", textDecoration: "none" }}>
-                    <Link
-                      to="/signup"
-                      
-                    >
-                      Don't have an account? Sign Up
-                    </Link>
+                  <Grid
+                    item
+                    style={{
+                      textAlign: "right",
+                      color: "black",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Link to="/signup">Don't have an account? Sign Up</Link>
                   </Grid>
                 </Grid>
               </form>
