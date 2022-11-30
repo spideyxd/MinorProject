@@ -6,7 +6,7 @@ import EnterDetails from "./components/DetailsForm";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ResponsiveDrawer from "./components/Dashboard";
 import SignUp from "./components/Signup";
-
+import Error from "./components/Error";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   
@@ -18,6 +18,7 @@ root.render(
         <Route path="/" element={<App/>} />
         <Route path="dashboard" element={<ResponsiveDrawer/>} />
         <Route path="signup" element={<SignUp/>} />
+        <Route path="error" element={<Error/>} />
       </Routes>
       
     </BrowserRouter>

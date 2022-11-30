@@ -52,8 +52,8 @@ export default function Cards(props) {
   // service_id: "service_xt8yg1p",
   // template_id: "template_qszcfqm",
   // user_id: "kFEBDIeZrqu4chvpx",
-  const sendEmail = () => {
-    console.log(props.name);
+  const sendEmail = async () => {
+    
     const toSend = {
    
         from_name: user.firstName,
@@ -62,7 +62,8 @@ export default function Cards(props) {
         to_email: props.email,
       
     };
-
+     
+    
     emailjs
       .send(
         "service_xt8yg1p",
@@ -72,26 +73,15 @@ export default function Cards(props) {
       )
       .then(
         (result) => {
-          console.log(result.text);
+          alert("Mail Sent !");
+           deleteCard();
         },
         (error) => {
-          console.log(error.text);
+          alert(error.text);
         }
       );
-    // fetch("https://api.emailjs.com/api/v1.0/email/send", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(toSend),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
+
+      
   };
 
   return (
@@ -109,10 +99,10 @@ export default function Cards(props) {
       </CardContent>
       <CardActions>
         <Button size="small" onClick={sendEmail}>
-          {user.role == "Mentor" ? "Accept" : "Request"}
+           Accept
         </Button>
         <Button size="small" onClick={deleteCard}>
-          {user.role == "Mentor" ? "Decline" : "Cancel Request"}
+         Decline
         </Button>
       </CardActions>
     </Card>

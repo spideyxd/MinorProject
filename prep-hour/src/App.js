@@ -1,6 +1,7 @@
 import "./stylesheets/App.css";
 import Banner from "./components/Banner";
 import Header from "./components/Header";
+import "./stylesheets/App.css";
 
 function App() {
   return (

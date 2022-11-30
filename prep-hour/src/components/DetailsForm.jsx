@@ -33,7 +33,7 @@ const purpose = [
 ];
 
 const validationSchema = yup.object({
-  email:yup.string("Enter email").email().required("email is required"),
+  email: yup.string("Enter email").email().required("email is required"),
   purpose: yup.string("Enter your purpose").required("Purpose is required"),
   mode: yup.string("Enter Mode of Communication").required("Mode is required"),
   date: yup.string().required(),
@@ -41,11 +41,10 @@ const validationSchema = yup.object({
 });
 
 export default function EnterDetails() {
-  const nav=useNavigate();
+  const nav = useNavigate();
   const formik = useFormik({
     initialValues: {
-      
-      email:"",
+      email: "",
       purpose: "",
       date: new Date(),
       mode: "",
@@ -54,6 +53,7 @@ export default function EnterDetails() {
     validationSchema: validationSchema,
 
     onSubmit: (values) => {
+      alert("Form submitted");
       fetch("http://localhost:8000/submitDetails", {
         // ye nhi hoga , get query run hogi yaha pe ,or data update hoga .
         method: "POST",
@@ -64,8 +64,7 @@ export default function EnterDetails() {
       })
         .then((response) => response.json())
         .then((data) => {
-         
-          if(data.msg=="success")nav("/dashboard");
+          if (data.msg === "success") nav("/dashboard");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -78,13 +77,14 @@ export default function EnterDetails() {
     color: "white",
     backgroundColor: "#ffffff",
     padding: "10px",
+    backgroundImage: "linear-gradient(to right,#BDC3C7, #2C3E50)",
   };
 
   // w
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Box
           style={myStyle}
@@ -95,15 +95,23 @@ export default function EnterDetails() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#010915" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" style={{ color: "#121212" }} variant="h4">
+          <Typography
+            component="h1"
+            style={{
+              fontFamily: "BarlowThicc",
+              color: "#121212",
+              fontSize: "3em",
+            }}
+            variant="h4"
+          >
             Enter Details
           </Typography>
           <Box component="form" sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
@@ -146,7 +154,7 @@ export default function EnterDetails() {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <FormControl sx={{ width: 300 }}>
                   <InputLabel id="purpose_">Purpose</InputLabel>
                   <Select
@@ -202,6 +210,16 @@ export default function EnterDetails() {
             </Grid>
 
             <Button
+              style={{
+                width: "90%",
+                marginRight: "auto",
+                marginLeft: "auto",
+                display: "block",
+                color: "black",
+                fontFamily: "Barlow",
+                backgroundImage:
+                  "linear-gradient(90deg, #c9d6ff 0%, #e2e2e2 100%)",
+              }}
               onClick={formik.handleSubmit}
               type="submit"
               variant="contained"

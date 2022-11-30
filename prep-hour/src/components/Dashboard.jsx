@@ -13,18 +13,18 @@ import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import LogoutIcon from "@mui/icons-material/Logout";  
-import { useNavigate} from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 import DashMentee from "./Dash_Mentee";
 import DashMentor from "./Dash_Mentor";
 
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
-  const [rolee,setRolee]=React.useState("");
+  const [rolee, setRolee] = React.useState("");
   const [user, setUser] = React.useState({});
   const nav = useNavigate();
- 
+
   React.useEffect(() => {
     fetch("http://localhost:8000/getinfo", {
       method: "GET",
@@ -35,7 +35,13 @@ export default function ResponsiveDrawer() {
       credentials: "include",
     })
       .then((data) => data.json())
-      .then((data) => {setRolee(data.role); setUser(data);});
+      .then((data) => {
+        setRolee(data.role);
+        setUser(data);
+      })
+      .catch((err) => {
+        nav("/error");
+      });
   }, []);
 
   const { firstName, role, graduationYear } = user;
@@ -49,7 +55,13 @@ export default function ResponsiveDrawer() {
   };
 
   const drawer = (
-    <div>
+    <div
+      style={{
+        color: "white",
+        height: "100vh",
+        backgroundImage: "linear-gradient(#000000,#130F40)",
+      }}
+    >
       <Toolbar />
       <Divider />
       <List>
@@ -61,9 +73,17 @@ export default function ResponsiveDrawer() {
           >
             <ListItemButton>
               <ListItemIcon>
-                <DoubleArrowIcon />
+                <DoubleArrowIcon color="primary" />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText
+                primary={
+                  <Typography
+                    style={{ fontFamily: "Barlow", letterSpacing: "0.2em" }}
+                  >
+                    {text}
+                  </Typography>
+                }
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -90,9 +110,17 @@ export default function ResponsiveDrawer() {
             }}
           >
             <ListItemIcon>
-              <LogoutIcon />
+              <LogoutIcon color="primary" />
             </ListItemIcon>
-            <ListItemText primary="Logout" />
+            <ListItemText
+              primary={
+                <Typography
+                  style={{ fontFamily: "Barlow", letterSpacing: "0.2em" }}
+                >
+                  Logout
+                </Typography>
+              }
+            />
           </ListItemButton>
         </ListItem>
       </List>
@@ -100,41 +128,65 @@ export default function ResponsiveDrawer() {
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed">
+    <Box
+      style={{
+        height:"100vh",
+       
+        backgroundImage: "linear-gradient(to left,#000000,#130F40)",
+      }}
+      sx={{ display: "flex" }}
+    >
+      <AppBar
+        style={{ backgroundImage: "linear-gradient(#000000,#130F40)" }}
+        position="fixed"
+      >
         <Toolbar>
-          <IconButton color="inherit" edge="start" onClick={handleDrawerToggle}>
+          <IconButton
+            size="large"
+            color="inherit"
+            edge="start"
+            onClick={handleDrawerToggle}
+          >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h5">DashBoard</Typography>
+          <Typography
+            style={{ textTransform: "capitalize", fontFamily: "Barlow" }}
+            variant="h5"
+          >
+            {" "}
+            Dashboard
+          </Typography>
         </Toolbar>
       </AppBar>
-      <Box sx={{ width: { sm: drawerWidth } }}>
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          sx={{
-            ".MuiDrawer-paper": {
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </Box>
+      {/* <Box sx={{ width: { sm: drawerWidth } }}> */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        sx={{
+          ".MuiDrawer-paper": {
+            height: "100vh",
+            width: drawerWidth,
+          },
+        }}
+      >
+        {drawer}
+      </Drawer>
+      {/* </Box> */}
       <Box
         sx={{
           display: "flex",
           flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
           mt: "4.5vh",
         }}
       >
-        {
-          (rolee=="Mentor")?<DashMentor arr={user.mentors!=undefined?user.mentors:[]}/>:<DashMentee arr={user.mentors!=undefined?user.mentors:[]}/>
-        }
-        
-        
+        {rolee === "Mentor" ? (
+          <DashMentor arr={user.mentors !== undefined ? user.mentors : []} />
+        ) : (
+          <DashMentee arr={user.mentors !== undefined ? user.mentors : []} />
+        )}
       </Box>
     </Box>
   );

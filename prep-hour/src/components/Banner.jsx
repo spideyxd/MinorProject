@@ -1,13 +1,14 @@
-import { Typography, useMediaQuery, useTheme ,Button } from "@mui/material";
+import { Typography, useMediaQuery, useTheme, Button } from "@mui/material";
 import React from "react";
 import illus from "../DesignAssets/illust.png";
 import "../stylesheets/Font.css";
-import { Link } from "react-router-dom";  
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down(1423));
-
+  const nav = useNavigate();
   return (
     <>
       {isMatch ? (
@@ -21,17 +22,52 @@ const Banner = () => {
               justifyContent: "space-between",
             }}
           >
-            
-              
-            <Button variant="outlined" color="error" style={{ borderRadius:"50px" ,marginTop :"6vh" ,marginLeft:"auto",marginRight:"auto" }}> Schedule Now</Button>
+            <Button
+              onClick={() => {
+                fetch("http://localhost:8000/getinfo", {
+                  method: "GET",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                })
+                  .then((data) => data.json())
+                  .then((data) => {
+                    nav("/dashboard");
+                  })
+                  .catch((err) => {
+                    nav("/login");
+                  });
+              }}
+              variant="outlined"
+              color="error"
+              style={{
+                borderRadius: "50px",
+                marginTop: "6vh",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Schedule Now
+            </Button>
+
             <Typography
-                variant="subtitle1"
-                sx={{width:"50vw",  marginTop: "20px", color: "white", fontFamily: "Barlow" }}
-              >
-                Mock interviews , resume review , personal assistance , career
-                guidance, get everything covered by your college seniors under
-                one platform. <span style={{fontStyle:"italic" ,color: "#84EAA0" }} > Schedule Now. </span>
-              </Typography>
+              variant="subtitle1"
+              sx={{
+                width: "50vw",
+                marginTop: "20px",
+                color: "white",
+                fontFamily: "Barlow",
+              }}
+            >
+              Mock interviews , resume review , personal assistance , career
+              guidance, get everything covered by your college seniors under one
+              platform.
+              <span style={{ fontStyle: "italic", color: "#84EAA0" }}>
+                Schedule Now.
+              </span>
+            </Typography>
             <div>
               <Typography
                 sx={{
@@ -47,9 +83,8 @@ const Banner = () => {
                   Prep<span style={{ color: "#84EAA0" }}>Hour</span>
                 </span>
               </Typography>
-             
             </div>
-            
+
             <div>
               <img src={illus} style={{ height: "auto", maxWidth: "65vw" }} />
             </div>
@@ -59,7 +94,6 @@ const Banner = () => {
         <>
           <div
             style={{
-                
               marginTop: "16vh",
               display: "flex",
               flexDirection: "row",
@@ -79,16 +113,50 @@ const Banner = () => {
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ width:"50vw", marginTop: "20px", color: "white", fontFamily: "Barlow" }}
+                sx={{
+                  width: "50vw",
+                  marginTop: "20px",
+                  color: "white",
+                  fontFamily: "Barlow",
+                }}
               >
                 Mock interviews , resume review , personal assistance , career
                 guidance, get everything covered by your college seniors under
-                one platform. <span style={{fontStyle:"italic" ,color: "#84EAA0" }} > Schedule Now. </span>
+                one platform.
+                <span style={{ fontStyle: "italic", color: "#84EAA0" }}>
+                  Schedule Now.
+                </span>
               </Typography>
-              <Link  to="/dashboard" style={{ textAlign:"right",  textDecoration: 'none' }} > 
-              
-              <Button variant="outlined" color="error" style={{ borderRadius:"50px" ,marginTop :"6vh" ,marginLeft:"auto",marginRight:"auto" }}> Schedule Now</Button>
-              </Link>
+
+              <Button
+                onClick={() => {
+                  fetch("http://localhost:8000/getinfo", {
+                    method: "GET",
+                    headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                  })
+                    .then((data) => data.json())
+                    .then((data) => {
+                      nav("/dashboard");
+                    })
+                    .catch((err) => {
+                      nav("/login");
+                    });
+                }}
+                variant="outlined"
+                color="error"
+                style={{
+                  borderRadius: "50px",
+                  marginTop: "6vh",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              >
+                Schedule Now
+              </Button>
             </div>
             <div>
               <img src={illus} style={{ height: "50vh" }} />

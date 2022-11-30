@@ -15,9 +15,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Navigate, redirect } from "react-router-dom";
+// import { Navigate, redirect } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 
 const domains = [
   "SDE",
@@ -65,7 +64,7 @@ const validationSchema = yup.object({
 });
 
 export default function SignUp() {
-  const nav=useNavigate();
+  const nav = useNavigate();
   const formik = useFormik({
     initialValues: {
       graduationYear: "",
@@ -91,11 +90,11 @@ export default function SignUp() {
       })
         .then((response) => response.json())
         .then((data) => {
-          if(data.msg=="error")
-          alert("Email already exist");
-          else{
+          if (data.msg === "error") alert("Email already exist");
+          else {
             alert("Registration Successfull");
-           nav("/login");}
+            nav("/login");
+          }
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -108,13 +107,14 @@ export default function SignUp() {
     color: "white",
     backgroundColor: "#ffffff",
     padding: "10px",
+    backgroundImage: "linear-gradient(to right,#BDC3C7, #2C3E50)",
   };
 
   // w
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Box
           style={myStyle}
@@ -125,10 +125,18 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#010915" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" style={{ color: "#121212" }} variant="h4">
+          <Typography
+            component="h1"
+            style={{
+              fontFamily: "BarlowThicc",
+              color: "#121212",
+              fontSize: "3em",
+            }}
+            variant="h4"
+          >
             Sign Up
           </Typography>
           <Box component="form" sx={{ mt: 3 }}>
@@ -168,7 +176,7 @@ export default function SignUp() {
                   helperText={formik.touched.lastName && formik.errors.lastName}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
                   required
                   fullWidth
@@ -182,9 +190,9 @@ export default function SignUp() {
                   helperText={formik.touched.email && formik.errors.email}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={12}>
                 <TextField
-                 
+                  type="password"
                   autoComplete="password"
                   name="password"
                   required
@@ -227,7 +235,7 @@ export default function SignUp() {
               </Grid>
 
               {formik.values.role !== "" && (
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={7}>
                   <FormControl sx={{ width: 300 }}>
                     <InputLabel id="graduation_">Graduation Year</InputLabel>
                     {formik.values.role === "Mentor" ? (
@@ -287,7 +295,7 @@ export default function SignUp() {
               )}
               {formik.values.role === "Mentor" && (
                 <>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={7}>
                     <FormControl sx={{ width: 300 }}>
                       <InputLabel id="domain_">Domain</InputLabel>
                       <Select
@@ -320,7 +328,7 @@ export default function SignUp() {
                       ) : null}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={7}>
                     <FormControl sx={{ width: 300 }}>
                       <InputLabel id="mode_">Mode</InputLabel>
                       <Select
@@ -354,6 +362,16 @@ export default function SignUp() {
               )}
             </Grid>
             <Button
+              style={{
+                width: "90%",
+                marginRight: "auto",
+                marginLeft: "auto",
+                display: "block",
+                color: "black",
+                fontFamily: "Barlow",
+                backgroundImage:
+                  "linear-gradient(90deg, #c9d6ff 0%, #e2e2e2 100%)",
+              }}
               onClick={formik.handleSubmit}
               type="submit"
               variant="contained"

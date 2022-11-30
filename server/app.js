@@ -66,34 +66,41 @@ app.post("/register", async (req, res) => {
 
 app.post("/submitDetails", async (req, res) => {
   const { email, mode, domain } = req.body;
-  console.log(email);
+
   const mentor = await DetailUser.find({
     role: "Mentor",
     mode: mode,
     domain: domain,
   });
-  const mentors = [];
-  const userrr=await DetailUser.findOne({email});
+  const userrr = await DetailUser.findOne({ email });
   mentor.map((val) => {
-    DetailUser.findOneAndUpdate(
-      { email: val.email },
-      { $push:{ mentors:{name:userrr.firstName,email}}},
-      { new: true },
-      (err, dat) => {
-        if (err) console.log(err);
-        else console.log(dat);
-      }
-    );
+    DetailUser.findOne({
+      email: val.email,
+      mentors: { name: userrr.firstName, email },
+    }).then((data) => {
+      console.log(data);
+      if (!data)
+        DetailUser.findOneAndUpdate(
+          { email: val.email },
+          { $push: { mentors: { name: userrr.firstName, email } } },
+          { new: true }
+        ).then((dat) => {
+          console.log("ok");
+        });
+    });
   });
 
-  
   res.json({ msg: "success" });
 });
 
 app.post("/decline", async (req, res) => {
-  const { email,name } = req.body;
-  const ans=await DetailUser.findOneAndUpdate({email:email }, { $pull: { mentors: {name} } }, { new: true });
-  
+  const { email, name } = req.body;
+  const ans = await DetailUser.findOneAndUpdate(
+    { email: email },
+    { $pull: { mentors: { name } } },
+    { new: true }
+  );
+
   res.json({ msg: "success" });
 });
 

@@ -22,7 +22,7 @@ const DashMentee = (props) => {
                    marginRight: "auto",
                  }}
                >
-                 Contained
+                 Find Mentor
                </Button>
              </Link>
           </>

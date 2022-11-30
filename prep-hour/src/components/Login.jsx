@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import illust from "../DesignAssets/illustForm.png";
+import illust from "../DesignAssets/login.png";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -55,13 +55,13 @@ export default function SignInSide() {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.msg == "error") alert("Invalid credentials");
+          if (data.msg === "error") alert("Invalid credentials");
           else {
             nav("/dashboard");
           }
         })
         .catch((error) => {
-         alert("retry");
+          alert("retry");
         });
     },
   });
@@ -69,6 +69,7 @@ export default function SignInSide() {
   return (
     <ThemeProvider theme={theme}>
       <Grid
+    
         container
         component="main"
         sx={{ height: "80vh", width: "80vw", ml: "10vw", mt: "10vh" }}
@@ -87,8 +88,8 @@ export default function SignInSide() {
           }}
         />
 
-        <Grid item xs={12} sm={7} md={5} component={Paper} elevation={9}>
-          <Box
+        <Grid   style={{backgroundImage:"linear-gradient(to right,#BDC3C7, #2C3E50)"}} item xs={12} sm={7} md={5} component={Paper} elevation={9}>
+          <Box 
             sx={{
               my: 8,
               mx: 4,
@@ -97,12 +98,12 @@ export default function SignInSide() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <AccountCircleIcon />
+            <Avatar  sx={{ m: 1, bgcolor: "#010915" }}>
+              <AccountCircleIcon  />
             </Avatar>
             <Typography variant="h4">
-              <span style={{ fontFamily: "DM Sans", fontWeight: "800" }}>
-                LOGIN
+              <span style={{ fontSize:"1.5em", fontFamily: "BarlowThicc", fontWeight: "500" }}>
+                Login
               </span>
             </Typography>
 
@@ -123,6 +124,8 @@ export default function SignInSide() {
                   autoFocus
                 />
                 <TextField
+                style={{outline:"none" , border:"none"}}
+                type="password"
                   margin="normal"
                   autoComplete="password"
                   name="password"
@@ -138,7 +141,7 @@ export default function SignInSide() {
                   helperText={formik.touched.password && formik.errors.password}
                   autoFocus
                 />
-                <Button
+                <Button style={{ fontFamily: "Barlow",color:"black",backgroundImage:"linear-gradient(to left,#BDC3C7, #2C3E50)"}} 
                   onClick={formik.handleSubmit}
                   type="submit"
                   fullWidth
@@ -148,15 +151,15 @@ export default function SignInSide() {
                   Login
                 </Button>
                 <Grid container>
-                  <Grid item xs>
+                  {/* <Grid item xs>
                     <Link href="#" variant="body2">
                       Forgot password?
                     </Link>
-                  </Grid>
-                  <Grid item>
+                  </Grid> */}
+                  <Grid  item style={{ textAlign: "right",color:"black", textDecoration: "none" }}>
                     <Link
                       to="/signup"
-                      style={{ textAlign: "right", textDecoration: "none" }}
+                      
                     >
                       Don't have an account? Sign Up
                     </Link>
