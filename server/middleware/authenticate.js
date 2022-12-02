@@ -9,10 +9,12 @@ const Authenticate = async (req, res, next) => {
       token,
       process.env.TOKEN
     );
+    
     const rootUser = await User.findOne({
       _id: verifyToken._id,
       "tokens:token": token,
     });
+
     if (!rootUser) {
       return res.status(401).send("err");
     }

@@ -9,25 +9,11 @@ const DashMentor = (props) => {
    <>
    {props.arr != undefined &&
           (props.arr.length == 0 ? (
-           
-             
-              // <Button
-              //   variant="outlined"
-              //   color="error"
-              //   style={{
-              //     borderRadius: "5px",
-              //     marginTop: "10vh",
-              //     marginLeft: "auto",
-              //     marginRight: "auto",
-              //   }}
-              // >
-              // You Don't Have any Requests .
-              // </Button>
-              // <div style={{height:"100vh",width:"100vw",display: "flex",alignItems:"center", justifyContent: 'center'}}>
-           <img src={sorry} style={{ marginLeft:"25vw", width:"auto" ,maxHeight:"80vh" }}/>
-          //  </div>
+        
+           <img src={sorry} style={{ marginLeft:"25vw", width:"auto" ,maxHeight:"60vh" }}/>
+          
           ) : (
-            props.arr.map((value, idx) => <Cards name={value.name } email={value.email} />)
+            props.arr.map((value, idx) => <Cards name={value.name } email={value.email} purpose={value.purpose} />)
           ))}</>
   )
 }

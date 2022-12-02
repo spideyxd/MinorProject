@@ -2,8 +2,8 @@ import { Typography, useMediaQuery, useTheme, Button } from "@mui/material";
 import React from "react";
 import illus from "../DesignAssets/illust.png";
 import "../stylesheets/Font.css";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 
 const Banner = () => {
   const theme = useTheme();

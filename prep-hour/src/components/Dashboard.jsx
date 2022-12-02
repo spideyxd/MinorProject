@@ -57,9 +57,10 @@ export default function ResponsiveDrawer() {
   const drawer = (
     <div
       style={{
+       
         color: "white",
         height: "100vh",
-        backgroundImage: "linear-gradient(#000000,#130F40)",
+        backgroundImage: "linear-gradient(#000000,#130F40)",  
       }}
     >
       <Toolbar />
@@ -128,15 +129,8 @@ export default function ResponsiveDrawer() {
   );
 
   return (
-    <Box
-      style={{
-        height:"100vh",
-       
-        backgroundImage: "linear-gradient(to left,#000000,#130F40)",
-      }}
-      sx={{ display: "flex" }}
-    >
-      <AppBar
+    <Box sx={{ display: "flex" }}>
+      {/* <AppBar
         style={{ backgroundImage: "linear-gradient(#000000,#130F40)" }}
         position="fixed"
       >
@@ -153,39 +147,68 @@ export default function ResponsiveDrawer() {
             style={{ textTransform: "capitalize", fontFamily: "Barlow" }}
             variant="h5"
           >
-            {" "}
+            
+            Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar> */}
+      <AppBar
+        position="fixed"
+        style={{ backgroundImage: "linear-gradient(#000000,#130F40)" }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          {/* <IconButton
+            size="large"
+            color="inherit"
+            edge="start"
+            onClick={handleDrawerToggle}
+          >
+            <MenuIcon />
+          </IconButton> */}
+          <Typography
+            style={{ textTransform: "capitalize", fontFamily: "Barlow" }}
+            variant="h4"
+          >
             Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
       {/* <Box sx={{ width: { sm: drawerWidth } }}> */}
-      <Drawer
-        variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
+      <Drawer 
+        variant="permanent"
+        // style={{ backgroundImage: "linear-gradient(#000000,#130F40)" }}
         sx={{
-          ".MuiDrawer-paper": {
-            height: "100vh",
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
+            boxSizing: "border-box",
           },
         }}
-      >
+      ><Box sx={{ overflow: 'auto' }}>
         {drawer}
+        </Box>
       </Drawer>
+
       {/* </Box> */}
-      <Box
-        sx={{
+
+      <Box component="main"
+        sx=
+        {{
+          flexGrow: 1,
+          p: 3,
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",
           alignItems: "center",
           mt: "4.5vh",
         }}
-      >
+        >
         {rolee === "Mentor" ? (
           <DashMentor arr={user.mentors !== undefined ? user.mentors : []} />
         ) : (
-          <DashMentee arr={user.mentors !== undefined ? user.mentors : []} />
+          <DashMentee name={user.firstName} email={user.email} />
         )}
       </Box>
     </Box>

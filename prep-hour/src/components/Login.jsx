@@ -46,7 +46,6 @@ export default function SignInSide() {
     onSubmit: (values) => {
       fetch("http://localhost:8000/loginB", {
         method: "POST",
-
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +60,7 @@ export default function SignInSide() {
           }
         })
         .catch((error) => {
-          alert("retry");
+          alert("Retry");
         });
     },
   });
@@ -168,15 +167,9 @@ export default function SignInSide() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                >
-                  Login
+                >  Login
                 </Button>
-                <Grid container>
-                  {/* <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid> */}
+                <Grid container>                 
                   <Grid
                     item
                     style={{

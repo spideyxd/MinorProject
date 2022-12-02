@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -12,10 +12,10 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(express.json());  
+app.use(express.json());
 app.use(cookieParser());
 
-const PORT=process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
 mongoose
   .connect("mongodb://localhost:27017/MinorProjectDB")
@@ -46,7 +46,7 @@ app.post("/register", async (req, res) => {
   )
     return res.status(422).json({ error: "Please fill the fields properly ." });
 
-  DetailUser.findOne({ email: email }).then((userExist) => {
+  DetailUser.findOne({ email }).then((userExist) => {
     if (userExist) return res.status(422).json({ msg: "error" });
     const user = new DetailUser({
       firstName,
@@ -67,34 +67,58 @@ app.post("/register", async (req, res) => {
   });
 });
 
+
 app.post("/submitDetails", async (req, res) => {
-  const { email, mode, domain } = req.body;
+  const { email, mode, domain ,purpose} = req.body;
 
   const mentor = await DetailUser.find({
     role: "Mentor",
     mode: mode,
     domain: domain,
   });
+
   const userrr = await DetailUser.findOne({ email });
+// console.log(mentor);
   mentor.map((val) => {
-    DetailUser.findOne({
-      email: val.email,
-      mentors: { name: userrr.firstName, email },
-    }).then((data) => {
-      console.log(data);
-      if (!data)
+    // // arr=[a,b,c,d]
+    // DetailUser.findOne({
+    //   email: val.email,
+    //  'mentors.email':email
+    // }).then((data) => {
+    //   if (!data)
         DetailUser.findOneAndUpdate(
           { email: val.email },
-          { $push: { mentors: { name: userrr.firstName, email } } },
+          { $push: { mentors: { name: userrr.firstName, email,purpose } } },
           { new: true }
-        ).then((dat) => {
-          console.log("ok");
-        });
-    });
+        ).then((dat) => {});
+    // });
   });
 
   res.json({ msg: "success" });
 });
+
+app.post("/deleteReq", async (req, res) => {
+  const { email, name } = req.body;
+
+  DetailUser.find({
+    role: "Mentor",
+    'mentors.email':email
+  }).then((data) => {
+    if (data) {  
+      data.map((val) => {
+       
+        DetailUser.findOneAndUpdate(
+          { email: val.email },
+          { $pull: { mentors: { name, email } } },
+          { new: true }
+        ).then((dat) => {});
+      });
+    }
+  });
+
+  res.json({ msg: "success" });
+});
+
 
 app.post("/decline", async (req, res) => {
   const { email, name } = req.body;
@@ -123,6 +147,7 @@ app.post("/loginB", async (req, res) => {
         expires: new Date(Date.now() + 25892000000),
         httpOnly: true,
       });
+
       if (!isMatch) {
         res.status(400).json({ msg: "error" });
       } else {

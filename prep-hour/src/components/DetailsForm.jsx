@@ -16,6 +16,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
+import emailjs from "@emailjs/browser";
 
 const domains = [
   "SDE",
@@ -40,8 +41,41 @@ const validationSchema = yup.object({
   domain: yup.string("Enter Domain").required("Domain is required"),
 });
 
-export default function EnterDetails() {
+
+
+export default function EnterDetails(props) {
   const nav = useNavigate();
+
+  const sendEmail = async () => {
+    
+    const toSend = {
+   
+    
+        to_name: props.name,
+        to_email: props.email,
+      
+    };
+     
+    
+    emailjs
+      .send(
+        "service_xt8yg1p",
+        "template_zu69wcu",
+        toSend,
+        "kFEBDIeZrqu4chvpx"
+      )
+      .then(
+        (result) => {
+                   
+        },
+        (error) => {
+          alert(error.text);
+        }
+      );
+
+      
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -50,10 +84,22 @@ export default function EnterDetails() {
       mode: "",
       domain: "",
     },
-    validationSchema: validationSchema,
 
-    onSubmit: (values) => {
-      alert("Form submitted");
+    validationSchema: validationSchema,
+    
+
+    onSubmit: (values,{resetForm}) => {
+      
+      fetch("http://localhost:8000/deleteReq", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: props.email, name: props.name }),
+      }).then(()=>{});
+
+      
       fetch("http://localhost:8000/submitDetails", {
         // ye nhi hoga , get query run hogi yaha pe ,or data update hoga .
         method: "POST",
@@ -64,13 +110,32 @@ export default function EnterDetails() {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.msg === "success") nav("/dashboard");
+          if (data.msg === "success"){alert("Form submitted");
+        sendEmail();
+
+        }
         })
         .catch((error) => {
           console.error("Error:", error);
         });
+
+        resetForm();
     },
   });
+
+  const deleteRequest=()=>{
+
+    
+    fetch("http://localhost:8000/deleteReq", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: props.email, name: props.name }),
+    }).then(()=>{alert("Your requests have been deleted from the database");});
+
+  }
 
   const myStyle = {
     borderRadius: "5px",
@@ -113,7 +178,7 @@ export default function EnterDetails() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <TextField
-                  required
+                 
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -225,7 +290,25 @@ export default function EnterDetails() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Submit
+              Find Mentor
+            </Button>
+            <Button
+              style={{
+                width: "30%",
+                marginRight: "auto",
+                marginLeft: "auto",
+                display: "block",
+                color: "black",
+                fontFamily: "Barlow",
+                backgroundImage:
+                  "linear-gradient(90deg, #89f7fe 0%, #66a6ff 100%)",
+              }}
+              onClick={deleteRequest}
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+             Delete Requests
             </Button>
           </Box>
         </Box>

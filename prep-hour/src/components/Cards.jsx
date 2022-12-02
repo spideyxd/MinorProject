@@ -43,15 +43,14 @@ export default function Cards(props) {
       console.log(data.msg);
       if (data.msg == "success") window.location.reload();
     } catch (err) {
-      //  nav("/login");
+      
     }
   };
+
   React.useEffect(() => {
     getInfo();
   }, []);
-  // service_id: "service_xt8yg1p",
-  // template_id: "template_qszcfqm",
-  // user_id: "kFEBDIeZrqu4chvpx",
+  
   const sendEmail = async () => {
     
     const toSend = {
@@ -89,20 +88,23 @@ export default function Cards(props) {
       <CardMedia component="img" alt="User" height="180" image={img} />
       <CardContent>
         <Typography
-          style={{ textTransform: "capitalize" }}
+          style={{ fontFamily:"BarlowThicc", textTransform: "capitalize" }}
           gutterBottom
           variant="h5"
           component="div"
         >
           {props.name}
         </Typography>
+        <Typography  style={{ fontFamily:"BarlowThicc", textTransform: "capitalize" }} variant="body2" color="text.secondary">
+          {props.purpose}
+        </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={sendEmail}>
-           Accept
+      <CardActions >
+        <Button style={{ fontFamily:"BarlowThicc", textTransform: "capitalize" }} size="small" onClick={sendEmail}>
+           ACCEPT
         </Button>
-        <Button size="small" onClick={deleteCard}>
-         Decline
+        <Button  style={{ fontFamily:"BarlowThicc", textTransform: "capitalize" }}size="small" onClick={deleteCard}>
+         DECLINE
         </Button>
       </CardActions>
     </Card>

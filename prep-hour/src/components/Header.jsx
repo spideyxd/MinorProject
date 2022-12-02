@@ -5,12 +5,14 @@ import { Button, Tab, Toolbar, useMediaQuery, useTheme } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import DrawerComp from "./DrawerComp";
 import { useNavigate } from "react-router-dom";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 
 const Header = () => {
   const nav = useNavigate();
   const list = ["Home", "About", "Contact"];
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  
 
   return (
     <>
@@ -54,19 +56,19 @@ const Header = () => {
           ) : (
             <>
               <Tabs sx={{ mx: "auto" }}>
-                {list.map((val) => {
-                  return (
+                
                     <Tab
-                      label={val}
+                      label="A small Project by JIIT Students,made with  &nbsp;   &#9829;"
                       style={{
                         color: "white",
                         fontFamily: "Barlow",
                         fontSize: "12px",
                       }}
-                    ></Tab>
-                  );
-                })}
-              </Tabs>
+                    >
+                    
+                    </Tab>
+                
+              </Tabs> 
 
               <Button
                 onClick={() => {
