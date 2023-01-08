@@ -10,7 +10,6 @@ import Error from "./components/Error";
 import Team from "./components/Team";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  
     <>
     <BrowserRouter>
       <Routes>
